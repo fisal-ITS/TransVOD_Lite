@@ -207,7 +207,7 @@ def make_coco_transforms(image_set):
 
     scales = [480, 512, 544, 576, 608, 640, 672, 704, 736, 768, 800]
 
-    if image_set == 'train_vid' or image_set == "train_det" or image_set == "train_joint":
+    if image_set == 'train_vid' or image_set == "train_det" or image_set == "train_joint" or image_set == "custom":
         return T.Compose([
             T.RandomHorizontalFlip(),
             T.RandomResize([600], max_size=1000),
@@ -232,6 +232,7 @@ def build(image_set, args):
         "train_vid": [(root / "Data" / "VID", root / "annotations" / 'imagenet_vid_train.json')],
         "train_joint": [(root / "Data" , root / "annotations" / 'imagenet_vid_train_joint_30.json')],
         "val": [(root / "Data" / "VID", root / "annotations" / 'imagenet_vid_val.json')],
+        "custom" :[(root / "Data" / "DET", root / "annotations" / 'dummy.json')]
     }
     datasets = []
     for (img_folder, ann_file) in PATHS[image_set]:
