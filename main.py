@@ -170,7 +170,7 @@ def main(args):
     n_parameters = sum(p.numel() for p in model.parameters() if p.requires_grad)
     print('number of params:', n_parameters)
 
-    dataset_train = build_dataset(image_set='train_joint', args=args)
+    dataset_train = build_dataset(image_set='custom', args=args)
     dataset_val = build_dataset(image_set='val', args=args)
 
     if args.distributed:
