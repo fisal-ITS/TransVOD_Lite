@@ -231,7 +231,8 @@ def build(image_set, args):
         "train_det": [(root / "Data" / "DET", root / "annotations" / 'imagenet_det_30plus1cls_vid_train.json')],
         "train_vid": [(root / "Data" / "VID", root / "annotations" / 'imagenet_vid_train.json')],
         "train_joint": [(root / "Data" , root / "annotations" / 'imagenet_vid_train_joint_30.json')],
-        "val": [(root / "Data" / "VID", root / "annotations" / 'imagenet_vid_val.json')],
+        #"val": [(root / "Data" / "VID", root / "annotations" / 'imagenet_vid_val.json')],
+        "val": [(root / "Data" / "VID", root / "annotations" / 'dummy_val.json')],
         "custom" :[(root / "Data" / "DET", root / "annotations" / 'dummy.json')]
     }
     datasets = []
