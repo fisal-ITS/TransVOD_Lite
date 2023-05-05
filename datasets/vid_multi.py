@@ -232,8 +232,8 @@ def build(image_set, args):
         "train_vid": [(root / "Data" / "VID", root / "annotations" / 'imagenet_vid_train.json')],
         "train_joint": [(root / "Data" , root / "annotations" / 'imagenet_vid_train_joint_30.json')],
         #"val": [(root / "Data" / "VID", root / "annotations" / 'imagenet_vid_val.json')],
-        "val": [(root / "Data" / "VID", root / "annotations" / 'dummy_val.json')],
-        "custom" :[(root / "Data" / "DET", root / "annotations" / 'dummy.json')]
+        "val": [(root / "Data" / "VID", root / "annotations" / 'custom_val.json')],
+        "custom" :[(root / "Data" / "DET", root / "annotations" / 'custom.json')]
     }
     datasets = []
     for (img_folder, ann_file) in PATHS[image_set]:
