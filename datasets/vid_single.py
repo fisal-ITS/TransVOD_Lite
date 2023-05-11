@@ -147,7 +147,7 @@ def make_coco_transforms(image_set):
         T.Normalize([0.485, 0.456, 0.406], [0.229, 0.224, 0.225])
     ])
 
-    if image_set == 'train_vid' or image_set == "train_det" or image_set == "train_joint":
+    if image_set == 'train_vid' or image_set == "train_det" or image_set == "train_joint" or image_set == "custom":
         return T.Compose([
             T.RandomHorizontalFlip(),
             T.RandomResize([600], max_size=1000),
@@ -168,11 +168,12 @@ def build(image_set, args):
     assert root.exists(), f'provided COCO path {root} does not exist'
     mode = 'instances'
     PATHS = {
-        # "train_joint": [(root / "Data" / "DET", root / "annotations" / 'imagenet_det_30plus1cls_vid_train.json'), (root / "Data" / "VID", root / "annotations_10true" / 'imagenet_vid_train.json')],
         "train_det": [(root / "Data" / "DET", root / "annotations" / 'imagenet_det_30plus1cls_vid_train.json')],
         "train_vid": [(root / "Data" / "VID", root / "annotations" / 'imagenet_vid_train.json')],
         "train_joint": [(root / "Data" , root / "annotations" / 'imagenet_vid_train_joint_30.json')],
-        "val": [(root / "Data" / "VID", root / "annotations" / 'imagenet_vid_val.json')],
+        #"val": [(root / "Data" / "VID", root / "annotations" / 'imagenet_vid_val.json')],
+        "val": [(root / "Data" / "VID", root / "annotations" / 'custom_val.json')],
+        "custom" :[(root / "Data" / "DET", root / "annotations" / 'custom.json')]
     }
     datasets = []
     for (img_folder, ann_file) in PATHS[image_set]:
