@@ -143,9 +143,9 @@ def main(args):
         from engine_single import evaluate, train_one_epoch
         import util.misc as utils
 	
-    else if args.dataset_file =="visual":
-	from engile_multi_mm import evaluate, train_one_epoch
-	import util.misc as utils
+    elif args.dataset_file =="visual":
+	from engine_multi_mm import evaluate, train_one_epoch
+	import util.misc_multi as utils
         
     else:
         from engine_multi import evaluate, train_one_epoch
