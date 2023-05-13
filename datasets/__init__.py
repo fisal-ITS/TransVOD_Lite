@@ -38,6 +38,8 @@ def build_dataset(image_set, args):
         return build_vid_single(image_set, args)
     if args.dataset_file == "vid_multi":
         return build_vid_multi(image_set, args)
+    if args.dataset_file == "visual":
+        return build_vid_multi(image_set, args)    
     if args.dataset_file == "vid_multi_eval":
         return build_vid_multi_eval(image_set, args)
     raise ValueError(f'dataset {args.dataset_file} not supported')
