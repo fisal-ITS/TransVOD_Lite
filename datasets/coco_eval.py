@@ -65,9 +65,22 @@ class CocoEvaluator(object):
             self.eval_imgs[iou_type] = np.concatenate(self.eval_imgs[iou_type], 2)
             create_common_coco_eval(self.coco_eval[iou_type], self.img_ids, self.eval_imgs[iou_type])
 
+#     def accumulate(self):
+#         for coco_eval in self.coco_eval.values():
+#             coco_eval.accumulate()
     def accumulate(self):
         for coco_eval in self.coco_eval.values():
             coco_eval.accumulate()
+        PR_folder = 'prec_recall_curves/'
+        os.makedirs(PR_folder, exist_ok = True)
+        np.save(PR_folder + 'precision.npy', coco_eval.eval['precision'])
+        prec = np.load(PR_folder + 'precision.npy')
+        y = prec[1, :, 0, 0, 0]
+        x = np.arange(0, 1.01, 0.01)
+        plt.xlabel("RECALL")
+        plt.ylabel("PRECISION")
+        plt.plot(x, y)
+        plt.savefig(PR_folder + 'PR_Curve.png')    
 
     def summarize(self):
         for iou_type, coco_eval in self.coco_eval.items():
