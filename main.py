@@ -268,12 +268,12 @@ def main(args):
             else:
                 tmp_dict = checkpoint['model']
                 for name, param in model_without_ddp.named_parameters():
-	                if ('temp' in name):
-	                    param.requires_grad = True
-	                else:
-	                    param.requires_grad = False
+                    if ('temp' in name):
+                        param.requires_grad = True
+                    else:
+                        param.requires_grad = False
 						
-			missing_keys, unexpected_keys = model_without_ddp.load_state_dict(tmp_dict, strict=False)
+            missing_keys, unexpected_keys = model_without_ddp.load_state_dict(tmp_dict, strict=False)
         unexpected_keys = [k for k in unexpected_keys if not (k.endswith('total_params') or k.endswith('total_ops'))]
         if len(missing_keys) > 0:
             print('Missing Keys: {}'.format(missing_keys))
@@ -288,15 +288,15 @@ def main(args):
 
     print("Start training")
     start_time = time.time()
-	writer = SummaryWriter('/content/tensorboard/')
+    writer = SummaryWriter('/content/tensorboard/')
     for epoch in range(args.start_epoch, args.epochs):
         if args.distributed:
             sampler_train.set_epoch(epoch)
         train_stats = train_one_epoch(
             model, criterion, data_loader_train, optimizer, device, epoch, args.clip_max_norm)
-		loss = train_stats['loss']
-		writer.add_scalar("Training Loss", loss, epoch)
-		lr_scheduler.step()
+        loss = train_stats['loss']
+        writer.add_scalar("Training Loss", loss, epoch)
+        lr_scheduler.step()
         print('args.output_dir', args.output_dir)
         if args.output_dir:
             checkpoint_paths = [output_dir / 'checkpoint.pth']
@@ -316,7 +316,7 @@ def main(args):
         #test_stats, coco_evaluator = evaluate(
          #   model, criterion, postprocessors, data_loader_val, base_ds, device, args.output_dir
         #)
-		writer.flush()
+        writer.flush()
         log_stats = {**{f'train_{k}': v for k, v in train_stats.items()},
                      'epoch': epoch,
                      'n_parameters': n_parameters}
