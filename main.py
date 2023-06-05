@@ -273,7 +273,7 @@ def main(args):
 	                else:
 	                    param.requires_grad = False
 						
-		missing_keys, unexpected_keys = model_without_ddp.load_state_dict(tmp_dict, strict=False)
+			missing_keys, unexpected_keys = model_without_ddp.load_state_dict(tmp_dict, strict=False)
         unexpected_keys = [k for k in unexpected_keys if not (k.endswith('total_params') or k.endswith('total_ops'))]
         if len(missing_keys) > 0:
             print('Missing Keys: {}'.format(missing_keys))
@@ -294,8 +294,8 @@ def main(args):
             sampler_train.set_epoch(epoch)
         train_stats = train_one_epoch(
             model, criterion, data_loader_train, optimizer, device, epoch, args.clip_max_norm)
-        loss = train_stats['loss']
-        writer.add_scalar("Training Loss", loss, epoch)
+		loss = train_stats['loss']
+		writer.add_scalar("Training Loss", loss, epoch)
 		lr_scheduler.step()
         print('args.output_dir', args.output_dir)
         if args.output_dir:
