@@ -229,11 +229,11 @@ def build(image_set, args):
     assert root.exists(), f'provided COCO path {root} does not exist'
     mode = 'instances'
     PATHS = {
-        "train_det": [(root / "Data" / "DET", root / "annotations" / 'imagenet_det_30plus1cls_vid_train.json')],
-        "train_vid": [(root / "Data" / "VID", root / "annotations" / 'imagenet_vid_train.json')],
-        "train_joint": [(root / "Data" , root / "annotations" / 'imagenet_vid_train_joint_30.json')],
+#         "train_det": [(root / "Data" / "DET", root / "annotations" / 'imagenet_det_30plus1cls_vid_train.json')],
+#         "train_vid": [(root / "Data" / "VID", root / "annotations" / 'imagenet_vid_train.json')],
+#         "train_joint": [(root / "Data" , root / "annotations" / 'imagenet_vid_train_joint_30.json')],
         #"val": [(root / "Data" / "VID", root / "annotations" / 'imagenet_vid_val.json')],
-        "val": [(root / "Data" / "DET", root / "annotations" / 'custom_val.json')],
+        "val": [(root / "Data" / "VID", root / "annotations" / 'custom_val.json')],
         "custom" :[(root / "Data" / "DET", root / "annotations" / 'custom.json')]
     }
     datasets = []
