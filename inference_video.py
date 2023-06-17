@@ -208,8 +208,9 @@ def main(args):
     cap = cv2.VideoCapture(video_path)
 
     # Inisialisasi video output
-    output_path = "/content/drive/MyDrive/testing_slow/normal/test1_normal_count4.mp4"
-    output_folder = "/content/drive/MyDrive/testing_slow/normal/predict3"
+    # output_path = "/content/drive/MyDrive/testing_slow/normal/test1_normal_count4.mp4"
+    output_path = os.path.join(os.path.dirname(video_path),"normal","output.mp4")
+    output_folder = os.path.join(os.path.dirname(video_path),"normal/predict")
     os.makedirs(output_folder, exist_ok=True)
     frame_width = int(cap.get(3))
     frame_height = int(cap.get(4))
@@ -232,35 +233,32 @@ def main(args):
         boxes, labels, scores = detect_cracks(frame_pil)
         # Jika terdeteksi retakan, simpan frame dengan nama "frame_{urutan}_crack.jpg"
         if len(boxes[0]) > 0:
-            frame_name = f"frame_{frame_count}_crack.jpg"
-            frame_path = os.path.join(output_folder, frame_name)
-            cv2.imwrite(frame_path, frame)
-            
-            # Gambar kotak dan teks pada retakan yang terdeteksi
-            font = ImageFont.truetype("/content/TransVOD_Lite_Crack/arial.ttf", 18)
-            draw = ImageDraw.Draw(frame_pil)
-            for xmin, ymin, xmax, ymax in boxes[0].tolist():
-                draw.rectangle(((xmin, ymin), (xmax, ymax)), outline="yellow", width=2)
-                if ymin - 18 >= 0:
-                    ymin -= 18
-                draw.text((xmin, ymin), f"Crack: {scores[0][0]:.4f}", fill="yellow", font=font, spacing=0.2)
-
-            # Ubah kembali ke format OpenCV dan simpan frame ke video output
-            #frame = cv2.cvtColor(np.array(frame_pil), cv2.COLOR_RGB2BGR)
+              frame_name = f"frame_{frame_count}_crack.jpg"
+              frame_path = os.path.join(output_folder, frame_name)
+              cv2.imwrite(frame_path, frame)
+              
+              # Gambar kotak dan teks pada retakan yang terdeteksi
+              font = ImageFont.truetype("/content/TransVOD_Lite_Crack/arial.ttf", 18)
+              draw = ImageDraw.Draw(frame_pil)
+              for xmin, ymin, xmax, ymax in boxes[0].tolist():
+                  draw.rectangle(((xmin, ymin), (xmax, ymax)), outline="red", width=2)
+                  if ymin - 18 >= 0:
+                      ymin -= 18
+                  draw.text((xmin, ymin), f"Crack: {scores[0][0]:.4f}", fill="red", font=font, spacing=0.2)
 
             
+              frame_pil.save(frame_path)
 
         # Jika tidak terdeteksi retakan, simpan frame dengan nama "frame_{urutan}.jpg"
         else:
             frame_name = f"frame_{frame_count}.jpg"
             frame_path = os.path.join(output_folder, frame_name)
-            cv2.imwrite(frame_path, frame)        
+            cv2.imwrite(frame_path, frame)
+                    
         # Menghitung jumlah retakan yang terdeteksi pada frame
         total_cracks += len(boxes[0])
-        # Tampilkan jumlah retakan yang terdeteksi pada tampilan video
         frame = cv2.cvtColor(np.array(frame_pil), cv2.COLOR_RGB2BGR)
         cv2.putText(frame, f"Total cracks detected: {total_cracks}", (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 255), 1)
-
         out.write(frame)
         # Tambahkan 1 ke frame_count
         frame_count += 1
