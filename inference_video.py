@@ -1,4 +1,5 @@
 # Inspired on https://github.com/duongnv0499/Explain-Deformable-DETR/tree/3f222f514a0bba0d0125063300b85aafc5a6030b
+#Modified by Fisal
 
 import argparse
 import datetime
@@ -201,14 +202,14 @@ def main(args):
         return boxes, labels, scores
 
     # Path video input
-    video_path = "/content/drive/MyDrive/testing_fast/test2_low.mp4"
+    video_path = input("Masukan lokasi video : ")
 
     # Membaca video menggunakan OpenCV
     cap = cv2.VideoCapture(video_path)
 
     # Inisialisasi video output
-    output_path = "/content/drive/MyDrive/testing_fast/low/test2_low_count.mp4"
-    output_folder = "/content/drive/MyDrive/testing_fast/low/predict"
+    output_path = "/content/drive/MyDrive/testing_slow/normal/test1_normal_count4.mp4"
+    output_folder = "/content/drive/MyDrive/testing_slow/normal/predict3"
     os.makedirs(output_folder, exist_ok=True)
     frame_width = int(cap.get(3))
     frame_height = int(cap.get(4))
@@ -233,38 +234,37 @@ def main(args):
         if len(boxes[0]) > 0:
             frame_name = f"frame_{frame_count}_crack.jpg"
             frame_path = os.path.join(output_folder, frame_name)
-            #cv2.imwrite(frame_path, frame)
+            cv2.imwrite(frame_path, frame)
             
             # Gambar kotak dan teks pada retakan yang terdeteksi
-            font = ImageFont.truetype("/content/TransVOD_ForCrack/arial.ttf", 18)
+            font = ImageFont.truetype("/content/TransVOD_Lite_Crack/arial.ttf", 18)
             draw = ImageDraw.Draw(frame_pil)
             for xmin, ymin, xmax, ymax in boxes[0].tolist():
-                draw.rectangle(((xmin, ymin), (xmax, ymax)), outline="cyan", width=2)
+                draw.rectangle(((xmin, ymin), (xmax, ymax)), outline="yellow", width=2)
                 if ymin - 18 >= 0:
                     ymin -= 18
-                draw.text((xmin, ymin), f"Crack: {scores[0][0]:.4f}", fill="cyan", font=font, spacing=0.2)
-            # Simpan frame dengan bounding box
-            frame_pil.save(frame_path)
+                draw.text((xmin, ymin), f"Crack: {scores[0][0]:.4f}", fill="yellow", font=font, spacing=0.2)
+
             # Ubah kembali ke format OpenCV dan simpan frame ke video output
             #frame = cv2.cvtColor(np.array(frame_pil), cv2.COLOR_RGB2BGR)
-            # Menghitung jumlah retakan yang terdeteksi pada frame
-            
+
             
 
         # Jika tidak terdeteksi retakan, simpan frame dengan nama "frame_{urutan}.jpg"
         else:
             frame_name = f"frame_{frame_count}.jpg"
             frame_path = os.path.join(output_folder, frame_name)
-            frame_pil.save(frame_path)        
+            cv2.imwrite(frame_path, frame)        
+        # Menghitung jumlah retakan yang terdeteksi pada frame
         total_cracks += len(boxes[0])
         # Tampilkan jumlah retakan yang terdeteksi pada tampilan video
-        cv2.putText(frame, f"Total cracks detected: {total_cracks}", (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 0.3, (0, 0, 255), 1)
-
         frame = cv2.cvtColor(np.array(frame_pil), cv2.COLOR_RGB2BGR)
-        out.write(frame)      
+        cv2.putText(frame, f"Total cracks detected: {total_cracks}", (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 255), 1)
+
+        out.write(frame)
         # Tambahkan 1 ke frame_count
         frame_count += 1
-        print(frame_count)
+        print("Frame Processed ",frame_count)
 
     print("Ekstraksi frame selesai. Total frame:", frame_count)
     # Tutup video input dan output
@@ -300,6 +300,7 @@ def main(args):
     # cap.release()
     # out.release()
     print("Waktu inferensi video : " + str(round((time.time() - t0),2)) + "detik")
+    print("Folder output : ", output_path)
 
 
 if __name__ == '__main__':
