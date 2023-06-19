@@ -2,3 +2,9 @@ pycocotools
 tqdm
 cython
 scipy
+torch==2.0.1+cu118 torchvision==0.15.2+cu118 torchaudio==2.0.1 --index-url https://download.pytorch.org/whl/cu118
+opencv-python
+timm
+-U torch torchvision torchaudio --no-cache-dir
+tensorboard
+ipykernel
