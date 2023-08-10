@@ -1,5 +1,6 @@
 # TransVOD_Lite
 **by [Qianyu Zhou](https://qianyuzqy.github.io/), [Xiangtai Li](https://lxtgh.github.io/), [Lu He](https://github.com/SJTU-LuHe)**, [Yibo Yang](), [Guangliang Cheng](), [Yunhai Tong](), [Lizhuang Ma](https://dmcv.sjtu.edu.cn/people/), [Dacheng Tao]()
+**modified by [Mohammad Fisal Aly Akbar](https://github.com/fisal-ITS)** 
 
 **[[Arxiv]](https://arxiv.org/pdf/2201.05047.pdf)**
 **[[Paper]](https://ieeexplore.ieee.org/document/9960850)**
@@ -15,6 +16,7 @@
 
 
 ## Updates
+- (August 2023) Modified for thesis purposes 
 - (December 2022) Checkpoints of pretrained models are released. 
 - (December 2022) Code of TransVOD Lite are released. 
 
@@ -40,34 +42,24 @@ If you find TransVOD useful in your research, please consider citing:
 
 
 ## Main Results
-Our proposed method TransVOD Lite, achieving the best tradeoff between the speed and accuracy with different backbones. SwinB, SwinS and SwinT mean Swin Base, Small and Tiny.
-
-![Comparison Results](fig/sota.png)
+We used TransVOD Lite to detect cracks in concrete roads from video data with the highest yield of mAP 47.5%.
 
 
 
 *Note:*
 1. All models of TransVOD are trained  with pre-trained weights on COCO dataset.
+2. Backbone that used are ResNet101, Swin B, and Swin S
 
 
 ## Installation
 
-The codebase is built on top of [Deformable DETR](https://github.com/fundamentalvision/Deformable-DETR) and [TransVOD](https://github.com/SJTU-LuHe/TransVOD).
+The codebase is built on top of [Deformable DETR](https://github.com/fundamentalvision/Deformable-DETR), [TransVOD](https://github.com/SJTU-LuHe/TransVOD), and [TransVOD Lite](https://github.com/qianyuzqy/TransVOD_Lite).
 
 ### Requirements
 
 * Linux, CUDA>=9.2, GCC>=5.4
   
 * Python>=3.7
-
-    We recommend you to use Anaconda to create a conda environment:
-    ```bash
-    conda create -n TransVOD python=3.7 pip
-    ```
-    Then, activate the environment:
-    ```bash
-    conda activate TransVOD
-    ```
   
 * PyTorch>=1.5.1, torchvision>=0.6.1 (following instructions [here](https://pytorch.org/)
 
@@ -100,7 +92,7 @@ Below, we provide checkpoints, training logs and inference logs of TransVOD Lite
 
 ### Dataset preparation
 
-1. Please download ILSVRC2015 DET and ILSVRC2015 VID dataset from [here](https://image-net.org/challenges/LSVRC/2015/2015-downloads). Then we covert jsons of two datasets by using the [code](https://github.com/open-mmlab/mmtracking/blob/master/tools/convert_datasets/ilsvrc/). You can directly download the joint json file [json](https://drive.google.com/drive/folders/1cCXY41IFsLT-P06xlPAGptG7sc-zmGKF?usp=sharing)  of the two datasets that we have already converted. After that, we recommend to symlink the path to the datasets to datasets/. And the path structure should be as follows:
+1. We used our own custom dataset of video footage of a concrete road with cracks. Please see the dataset and annotations at the following link: [Concrete Crack Detection Dataset by Fisal](https://drive.google.com/drive/folders/1gqiL-w3RkRptfbp_Sgsrk07jn8gYe1i2?usp=sharing). And the path structure should be as follows:
 
 ```
 code_root/
@@ -110,48 +102,13 @@ code_root/
             ├── VID/
             └── DET/
         └── annotations/
-        	  ├── imagenet_vid_train.json
-              ├── imagenet_vid_train_joint_30.json
-        	  └── imagenet_vid_val.json
+        	  ├── custom.json
+        	  └── custom_val.json
 
 ```
 
 ### Training
-We use Swin Transformer as the network backbone. We train our TransVOD with Swin-base as backbone as following:
-
-#### Training on single node
-1. Train SingleFrameBaseline. You can download COCO pretrained weights from the aforementioned link. 
-   
-```bash 
-GPUS_PER_NODE=8 ./tools/run_dist_launch.sh $1 swinb $2 configs/swinb_train_single.sh
-```  
-2. Train TransVOD Lite. Using the model weights of SingleBaseline as the resume model.
-
-```bash 
-GPUS_PER_NODE=8 ./tools/run_dist_launch.sh $1 swinb $2 configs/swinb_train_multi.sh
-``` 
-
-
-#### Training on slurm cluster
-If you are using slurm cluster, you can simply run the following command to train on 1 node with 8 GPUs:
-```bash
-GPUS_PER_NODE=8 ./tools/run_dist_slurm.sh <partition> swinb 8 configs/swinb_train_multi.sh
-```
-
-### Evaluation
-You can get the config file and pretrained model of TransVOD (the link is in "Checkpoint" session), then put the pretrained_model into correponding folder.
-```
-code_root/
-└── exps/
-    └── our_models/
-        ├── COCO_pretrained_model
-        ├── exps_single
-        └── exps_multi
-```
-And then run following command to evaluate it on ImageNET VID validation set:
-```bash 
-GPUS_PER_NODE=8 ./tools/run_dist_launch.sh $1 eval_swinb $2 configs/swinb_eval_multi.sh
-```
+We train TransVOD Lite using Google Colab with Tesla T4 GPU on single node. For more detail check on [this file](https://github.com/qianyuzqy/TransVOD_Lite/blob/main/TransVODLite_full.ipynb)
 
 ## Acknowledgements
 
