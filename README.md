@@ -10,10 +10,6 @@
 
 (TPAMI 2023) [TransVOD:End-to-End Video Object Detection with Spatial-Temporal Transformers](https://ieeexplore.ieee.org/document/9960850).
 
-:bell: We are happy to announce that TransVOD was accepted by **IEEE TPAMI**. 
-
-:bell: We are happy to announce that our method is the first work that achieves 90% mAP on ImageNet VID dataset.
-
 
 ## Updates
 - (August 2023) Modified for thesis purposes 
@@ -41,14 +37,15 @@ If you find TransVOD useful in your research, please consider citing:
 ```
 
 
-## Main Results
-We used TransVOD Lite to detect cracks in concrete roads from video data with the highest yield of mAP 47.5%.
+## Abstract
+Infrastructure development, particularly roads, is rapidly expanding in Indonesia. Concrete pavement is favored for its strength and durability. However, natural and human factors lead to damage, with cracking being a common initial issue that can escalate if left unaddressed. To streamline inspection, an automated crack detection system is essential. This study focuses on a Transformer Network-based model, TransVOD Lite, to detect cracks in concrete roads from video data. This architecture combines CNN for image feature extraction and Spatial-Temporal Transformer for object detection. The research involves three stages: data collection with annotated videos of cracked roads, model training for crack recognition, and performance evaluation. The TransVOD Lite achieved a 47.5% mean average precision (mAP) on validation data. For test data, it excelled in low-light and 20-30 km/h scenarios, achieving 90.46% accuracy, 80.77% precision, 94.23% recall, and 86.98% F1-score.
 
 
 
 *Note:*
 1. All models of TransVOD are trained  with pre-trained weights on COCO dataset.
 2. Backbone that used are ResNet101, Swin B, and Swin S
+3. Dataset that used is scrapped by self
 
 
 ## Installation
